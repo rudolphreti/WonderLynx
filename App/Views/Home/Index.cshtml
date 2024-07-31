@@ -1,0 +1,18 @@
+﻿@using API
+@model List<WeatherForecast>
+
+<h1>Wettervorhersage</h1>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var forecast in Model)
+        {
+<li>@forecast.Date: @forecast.TemperatureC°C - @forecast.Summary</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Keine Daten zur Wettervorhersage verfügbar.</p>
+}
