@@ -19,6 +19,7 @@ namespace API.Services
             var referenceItems = await _context.ReferenceItems
                 .Include(ri => ri.Type)
                 .Include(ri => ri.Category)
+                .Include(rt => rt.Tags)
                 .ToListAsync();
 
             var referenceItemDtos = referenceItems.Select(ri => new ReferenceItemDto
@@ -31,7 +32,8 @@ namespace API.Services
                 TypeName = ri.Type?.Name ?? string.Empty,  
                 CategoryName = ri.Category?.Name ?? string.Empty,  
                 Description = ri.Description, 
-                ThumbnailUrl = ri.ThumbnailUrl
+                ThumbnailUrl = ri.ThumbnailUrl,
+                Tags = ri.Tags.Select(t => t.Name).ToList()
             }).ToList();
 
             return referenceItemDtos;
@@ -43,6 +45,7 @@ namespace API.Services
             var referenceItem = await _context.ReferenceItems
                 .Include(ri => ri.Type)
                 .Include(ri => ri.Category)
+                .Include(ri => ri.Tags)  // Include Tags
                 .FirstOrDefaultAsync(ri => ri.ReferenceId == id);
 
             if (referenceItem == null)
@@ -52,18 +55,19 @@ namespace API.Services
 
             var referenceItemDto = new ReferenceItemDto
             {
-                // I don't understand question marks here  
                 ReferenceId = referenceItem.ReferenceId,
                 Title = referenceItem.Title ?? string.Empty,
                 Subtitle = referenceItem.Subtitle,
                 TypeName = referenceItem.Type?.Name ?? string.Empty,
                 CategoryName = referenceItem.Category?.Name ?? string.Empty,
                 Description = referenceItem.Description,
-                ThumbnailUrl = referenceItem.ThumbnailUrl
+                ThumbnailUrl = referenceItem.ThumbnailUrl,
+                Tags = referenceItem.Tags.Select(t => t.Name).ToList()  // Tags zum DTO hinzufügen
             };
 
             return referenceItemDto;
         }
+
 
         public async Task<ReferenceItem> AddAsync(ReferenceItem referenceItem)
         {

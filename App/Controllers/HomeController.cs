@@ -1,11 +1,9 @@
-using API;
-using App.Models;
+
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using Newtonsoft.Json;
-using API.Models;
-using static App.Models.HomeVm;
-using System.Net.Http;
+using System.Diagnostics;
+using static App.Models.HomeVm; // question: why static?
+using App.Models;
 
 namespace App.Controllers
 {
@@ -16,13 +14,13 @@ namespace App.Controllers
 
         public HomeController(HttpClient httpClient, ILogger<HomeController> logger)
         {
-            _logger = logger;
             _httpClient = httpClient;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7265/ReferenceItems"); //global variable https://localhost:7265/ for API URL
+            var response = await _httpClient.GetAsync("https://localhost:7265/ReferenceItems");
 
             if (response.IsSuccessStatusCode)
             {
@@ -31,16 +29,43 @@ namespace App.Controllers
 
                 var viewModel = new IndexViewModel
                 {
-                    ReferenceItems = referenceItems ?? []
+                    ReferenceItems = referenceItems ?? new List<ReferenceItemViewModel>()
                 };
 
                 return View(viewModel);
             }
             else
             {
-                // Fehlerbehandlung, falls API-Aufruf fehlschlägt
-                return View(new IndexViewModel { ReferenceItems = [] });
+                _logger.LogError("Fehler beim Abrufen der Referenzitems. Statuscode: " + response.StatusCode);
+                return View(new IndexViewModel { ReferenceItems = new List<ReferenceItemViewModel>() });
             }
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"https://localhost:7265/ReferenceItems/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "Das Element wurde erfolgreich gelöscht.";
+            }
+            else
+            {
+                TempData["Message"] = "Fehler beim Löschen des Elements.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

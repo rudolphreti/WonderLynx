@@ -9,5 +9,6 @@
         public string CategoryName { get; set; } = string.Empty;
         public string? Description { get; set; } = null;
         public string? ThumbnailUrl { get; set; } = null;
+        public List<string> Tags { get; set; } = [];
     }
 }

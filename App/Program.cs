@@ -6,11 +6,13 @@ namespace App
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddHttpClient("WeatherAPI", client =>
+            builder.Services.AddHttpClient("API", client =>
             {
-                client.BaseAddress = new Uri("http://localhost:5029/");  
+                client.BaseAddress = new Uri("http://localhost:7265/");  
                                                                          
             });
+
+            builder.Services.AddHttpContextAccessor();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -27,11 +29,9 @@ namespace App
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseHttpMethodOverride();
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

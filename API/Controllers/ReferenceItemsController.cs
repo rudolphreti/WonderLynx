@@ -40,7 +40,7 @@ namespace API.Controllers
             return Ok(item);
         }
 
-        // PUT: api/ReferenceItems/5
+        // PUT: ReferenceItems/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReferenceItem(int id, ReferenceItem referenceItem)
         {
@@ -53,7 +53,7 @@ namespace API.Controllers
             return Ok(updatedItem);
         }
 
-        // POST: api/ReferenceItems
+        // POST: ReferenceItems
         [HttpPost]
         public async Task<ActionResult<ReferenceItem>> PostReferenceItem(ReferenceItem referenceItem)
         {
@@ -61,7 +61,7 @@ namespace API.Controllers
             return CreatedAtAction("GetReferenceItem", new { id = newItem.ReferenceId }, newItem);
         }
 
-        // DELETE: api/ReferenceItems/5
+        // DELETE: ReferenceItems/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReferenceItem(int id)
         {

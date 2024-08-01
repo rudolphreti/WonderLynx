@@ -1,4 +1,3 @@
-
 using API.Interfaces;
 using API.Models;
 using API.Services;
@@ -18,6 +17,18 @@ namespace API
 
             builder.Services.AddScoped<IReferenceItemService, ReferenceItemService>();
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(); // configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,9 +42,10 @@ namespace API
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
+            // Use CORS policy
+            app.UseCors("AllowAll");
 
             app.MapControllers();
 
