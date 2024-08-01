@@ -3,44 +3,44 @@ using App.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using API.Models;
+using static App.Models.HomeVm;
+using System.Net.Http;
 
 namespace App.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly HttpClient _httpClientFactory;
+        private readonly HttpClient _httpClient;
 
-
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
+        public HomeController(HttpClient httpClient, ILogger<HomeController> logger)
         {
             _logger = logger;
-            _httpClientFactory = httpClientFactory.CreateClient("WeatherAPI");
+            _httpClient = httpClient;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory;
-            var response = await client.GetAsync("WeatherForecast");
+            var response = await _httpClient.GetAsync("https://localhost:7265/ReferenceItems"); //global variable https://localhost:7265/ for API URL
+
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var forecasts = JsonConvert.DeserializeObject<List<WeatherForecast>>(content);
-                return View(forecasts);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var referenceItems = JsonConvert.DeserializeObject<List<ReferenceItemViewModel>>(jsonResponse);
+
+                var viewModel = new IndexViewModel
+                {
+                    ReferenceItems = referenceItems ?? []
+                };
+
+                return View(viewModel);
             }
-
-            return View(new List<WeatherForecast>());
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            else
+            {
+                // Fehlerbehandlung, falls API-Aufruf fehlschlägt
+                return View(new IndexViewModel { ReferenceItems = [] });
+            }
         }
     }
 }
