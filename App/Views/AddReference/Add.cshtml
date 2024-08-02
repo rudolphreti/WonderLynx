@@ -1,0 +1,48 @@
+﻿@model App.Models.HomeVm.ReferenceItemViewModel
+
+<h2>Add new reference</h2>
+
+<form asp-action="Add">
+    <div class="form-group">
+        <label asp-for="ThumbnailUrl">Thumbnail</label>
+        <input asp-for="ThumbnailUrl" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Subtitle">Subtitle</label>
+        <input asp-for="Subtitle" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TypeName">Type</label>
+        <select asp-for="TypeName" class="form-control">
+            <!-- Options dynamically populated from API -->
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryName">Category</label>
+        <select asp-for="CategoryName" class="form-control">
+            <!-- Options dynamically populated from API -->
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Tags">Tags</label>
+        <select asp-for="Tags" class="form-control" multiple>
+            <!-- Options dynamically populated from API -->
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>

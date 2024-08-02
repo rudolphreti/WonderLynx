@@ -1,49 +1,98 @@
 
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using static App.Models.HomeVm; // question: why static?
 using App.Models;
+using App.Services;
 
 namespace App.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly ReferenceItemService _referenceItemService;
 
-        public HomeController(HttpClient httpClient, ILogger<HomeController> logger)
+        public HomeController(ReferenceItemService referenceItemService, ILogger<HomeController> logger)
         {
-            _httpClient = httpClient;
+            _referenceItemService = referenceItemService;
             _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7265/ReferenceItems");
+            var referenceItems = await _referenceItemService.GetReferenceItems();
 
-            if (response.IsSuccessStatusCode)
+            var viewModel = new IndexViewModel
             {
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                var referenceItems = JsonConvert.DeserializeObject<List<ReferenceItemViewModel>>(jsonResponse);
+                ReferenceItems = referenceItems ?? new List<ReferenceItemViewModel>()
+            };
 
-                var viewModel = new IndexViewModel
+            return View(viewModel);
+        }
+
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(ReferenceItemViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _referenceItemService.AddReferenceItem(model);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    ReferenceItems = referenceItems ?? new List<ReferenceItemViewModel>()
-                };
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    _logger.LogError("Error adding the reference item.");
+                    return View(model);
+                }
+            }
+            return View(model);
+        }
 
-                return View(viewModel);
+        public async Task<IActionResult> Edit(int id)
+        {
+            var referenceItem = await _referenceItemService.GetReferenceItem(id);
+
+            if (referenceItem != null)
+            {
+                return View(referenceItem);
             }
             else
             {
-                _logger.LogError("Fehler beim Abrufen der Referenzitems. Statuscode: " + response.StatusCode);
-                return View(new IndexViewModel { ReferenceItems = new List<ReferenceItemViewModel>() });
+                _logger.LogError("Fehler beim Abrufen des Referenzitems.");
+                return View("Error");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ReferenceItemViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _referenceItemService.UpdateReferenceItem(model);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    _logger.LogError("Fehler beim Aktualisieren des Referenzitems.");
+                    return View(model);
+                }
+            }
+            return View(model);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await _httpClient.DeleteAsync($"https://localhost:7265/ReferenceItems/{id}");
+            var response = await _referenceItemService.DeleteReferenceItem(id);
 
             if (response.IsSuccessStatusCode)
             {
@@ -67,5 +116,7 @@ namespace App.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        
     }
 }

@@ -16,6 +16,8 @@ namespace API
                 options.UseSqlServer(connectionString));
 
             builder.Services.AddScoped<IReferenceItemService, ReferenceItemService>();
+            builder.Services.AddScoped<ITagService, TagService>();
+
 
             // Add CORS policy
             builder.Services.AddCors(options =>

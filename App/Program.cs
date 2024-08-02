@@ -1,3 +1,5 @@
+using App.Services; 
+
 namespace App
 {
     public class Program
@@ -8,18 +10,21 @@ namespace App
 
             builder.Services.AddHttpClient("API", client =>
             {
-                client.BaseAddress = new Uri("http://localhost:7265/");  
-                                                                         
+                client.BaseAddress = new Uri("https://localhost:7265/");
+                client.DefaultRequestVersion = new Version(1, 1); // Optional: Setzt HTTP/1.1 statt HTTP/2
+            }).ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+                };
             });
+            builder.Services.AddTransient<ReferenceItemService>();
 
             builder.Services.AddHttpContextAccessor();
-
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");

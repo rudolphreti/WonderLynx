@@ -1,4 +1,6 @@
-﻿namespace App.Models
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace App.Models
 {
     public class HomeVm
     {
@@ -12,6 +14,8 @@
             public string? Description { get; set; } = null;
             public string? ThumbnailUrl { get; set; } = null;
             public List<string> Tags { get; set; } = [];
+            public List<string> Categories { get; set; } = [];
+            public List<string> Types { get; set; } = [];
         }
 
 
