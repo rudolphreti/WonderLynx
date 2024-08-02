@@ -1,45 +1,40 @@
 ﻿using Newtonsoft.Json;
-using static App.Models.HomeVm;
+using App.Models;
 using System.Net.Http;
 using System.Text;
 
 namespace App.Services
 {
-    public class ReferenceItemService
+    public class ReferenceItemService(IHttpClientFactory httpClientFactory, ILogger<ReferenceItemService> logger)
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger<ReferenceItemService> _logger;
+        private readonly HttpClient _httpClient = httpClientFactory.CreateClient("API");
+        private readonly ILogger<ReferenceItemService> _logger = logger;
 
-        public ReferenceItemService(IHttpClientFactory httpClientFactory, ILogger<ReferenceItemService> logger)
-        {
-            _httpClient = httpClientFactory.CreateClient("API");
-            _logger = logger;
-        }
-        public async Task<List<ReferenceItemViewModel>> GetReferenceItems()
+        public async Task<List<ReferenceItem>> GetReferenceItems()
         {
             var response = await _httpClient.GetAsync("ReferenceItems");
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var referenceItems = JsonConvert.DeserializeObject<List<ReferenceItemViewModel>>(jsonResponse);
+                var referenceItems = JsonConvert.DeserializeObject<List<ReferenceItem>>(jsonResponse);
                 return referenceItems;
             }
             else
             {
                 _logger.LogError("Fehler beim Abrufen der Referenzitems.");
-                return new List<ReferenceItemViewModel>();
+                return [];
             }
         }
 
-        public async Task<ReferenceItemViewModel> GetReferenceItem(int id)
+        public async Task<ReferenceItem> GetReferenceItem(int id)
         {
             var response = await _httpClient.GetAsync($"ReferenceItems/{id}");
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var referenceItem = JsonConvert.DeserializeObject<ReferenceItemViewModel>(jsonResponse);
+                var referenceItem = JsonConvert.DeserializeObject<ReferenceItem>(jsonResponse);
                 return referenceItem;
             }
             else
@@ -49,7 +44,7 @@ namespace App.Services
             }
         }
 
-        public async Task<HttpResponseMessage> UpdateReferenceItem(ReferenceItemViewModel model)
+        public async Task<HttpResponseMessage> UpdateReferenceItem(UpdateReference model)
         {
             var jsonContent = JsonConvert.SerializeObject(model);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -57,7 +52,7 @@ namespace App.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> AddReferenceItem(ReferenceItemViewModel model)
+        public async Task<HttpResponseMessage> AddReferenceItem(AddReference model)
         {
             var jsonContent = JsonConvert.SerializeObject(model);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -76,5 +71,23 @@ namespace App.Services
 
             return response;
         }
+
+        public async Task<List<string>> GetAllTags()
+        {
+            var response = await _httpClient.GetAsync("Tags"); // Angenommen, der Endpunkt für Tags ist "Tags"
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var tags = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
+                return tags;
+            }
+            else
+            {
+                _logger.LogError("Fehler beim Abrufen der Tags.");
+                return [];
+            }
+        }
+
     }
 }

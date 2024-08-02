@@ -4,16 +4,10 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Controllers
 {
-    public class DeleteReferenceController : Controller
+    public class DeleteReferenceController(ReferenceItemService referenceItemService, ILogger<DeleteReferenceController> logger) : Controller
     {
-        private readonly ReferenceItemService _referenceItemService;
-        private readonly ILogger<DeleteReferenceController> _logger;
-
-        public DeleteReferenceController(ReferenceItemService referenceItemService, ILogger<DeleteReferenceController> logger)
-        {
-            _referenceItemService = referenceItemService;
-            _logger = logger;
-        }
+        private readonly ReferenceItemService _referenceItemService = referenceItemService;
+        private readonly ILogger<DeleteReferenceController> _logger = logger;
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)

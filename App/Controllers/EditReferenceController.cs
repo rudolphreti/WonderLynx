@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using App.Models;
 using App.Services;
-using static App.Models.HomeVm;
 
 namespace App.Controllers
 {
-    public class EditReferenceController : Controller
+    public class EditReferenceController(ReferenceItemService referenceItemService, ILogger<EditReferenceController> logger) : Controller
     {
-        private readonly ReferenceItemService _referenceItemService;
-        private readonly ILogger<EditReferenceController> _logger;
-
-        public EditReferenceController(ReferenceItemService referenceItemService, ILogger<EditReferenceController> logger)
-        {
-            _referenceItemService = referenceItemService;
-            _logger = logger;
-        }
+        private readonly ReferenceItemService _referenceItemService = referenceItemService;
+        private readonly ILogger<EditReferenceController> _logger = logger;
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -32,7 +25,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ReferenceItemViewModel model)
+        public async Task<IActionResult> Edit(UpdateReference model)
         {
             if (ModelState.IsValid)
             {
