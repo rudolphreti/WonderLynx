@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{933BE446-D07E-4B0C-A335-468B8A1510F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{933BE446-D07E-4B0C-A335-468B8A1510F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{C68E5B93-3DC2-42F1-AA2B-81A56E3476DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{C68E5B93-3DC2-42F1-AA2B-81A56E3476DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WonderLynx.Tests", "WonderLynx.Tests\WonderLynx.Tests.csproj", "{4E680BED-3D67-4A60-ABA9-8CBE60FD86E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{933BE446-D07E-4B0C-A335-468B8A1510F3} = {933BE446-D07E-4B0C-A335-468B8A1510F3}
+		{C68E5B93-3DC2-42F1-AA2B-81A56E3476DE} = {C68E5B93-3DC2-42F1-AA2B-81A56E3476DE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,10 @@ Global
 		{C68E5B93-3DC2-42F1-AA2B-81A56E3476DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C68E5B93-3DC2-42F1-AA2B-81A56E3476DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C68E5B93-3DC2-42F1-AA2B-81A56E3476DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E680BED-3D67-4A60-ABA9-8CBE60FD86E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E680BED-3D67-4A60-ABA9-8CBE60FD86E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E680BED-3D67-4A60-ABA9-8CBE60FD86E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E680BED-3D67-4A60-ABA9-8CBE60FD86E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

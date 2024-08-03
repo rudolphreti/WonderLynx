@@ -15,8 +15,14 @@ namespace API
             builder.Services.AddDbContext<WonderLynxContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            builder.Services.AddScoped<IReferenceItemService, ReferenceItemService>();
+            //builder.Services.AddScoped<IReferenceItemService, ReferenceItemService>(); 
             builder.Services.AddScoped<ITagService, TagService>();
+
+            // REFACTORING: Add services for each operation
+            builder.Services.AddScoped<IReferenceItemGetService, ReferenceItemGetService>();
+            builder.Services.AddScoped<IReferenceItemAddService, ReferenceItemAddService>();
+            builder.Services.AddScoped<IReferenceItemUpdateService, ReferenceItemUpdateService>();
+            builder.Services.AddScoped<IReferenceItemDeleteService, ReferenceItemDeleteService>();
 
 
             // Add CORS policy

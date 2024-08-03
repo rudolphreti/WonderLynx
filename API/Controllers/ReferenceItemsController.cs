@@ -1,29 +1,27 @@
 ﻿using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ReferenceItemsController : ControllerBase
+    public class ReferenceItemsController(
+        IReferenceItemGetService getService,
+        IReferenceItemAddService addService,
+        IReferenceItemUpdateService updateService,
+        IReferenceItemDeleteService deleteService) : ControllerBase
     {
-        private readonly IReferenceItemService _service;
-
-        public ReferenceItemsController(IReferenceItemService service)
-        {
-            _service = service;
-        }
+        private readonly IReferenceItemGetService _getService = getService;
+        private readonly IReferenceItemAddService _addService = addService;
+        private readonly IReferenceItemUpdateService _updateService = updateService;
+        private readonly IReferenceItemDeleteService _deleteService = deleteService;
 
         // GET: ReferenceItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReferenceItem>>> GetReferenceItems()
         {
-            var items = await _service.GetAllAsync();
+            var items = await _getService.GetAllAsync();
             return Ok(items);
         }
 
@@ -31,7 +29,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ReferenceItem>> GetReferenceItem(int id)
         {
-            var item = await _service.GetByIdAsync(id);
+            var item = await _getService.GetByIdAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -49,7 +47,7 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var updatedItem = await _service.UpdateAsync(referenceItem);
+            var updatedItem = await _updateService.UpdateAsync(referenceItem);
             return Ok(updatedItem);
         }
 
@@ -57,7 +55,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<ReferenceItem>> PostReferenceItem(ReferenceItem referenceItem)
         {
-            var newItem = await _service.AddAsync(referenceItem);
+            var newItem = await _addService.AddAsync(referenceItem);
             return CreatedAtAction("GetReferenceItem", new { id = newItem.ReferenceId }, newItem);
         }
 
@@ -65,7 +63,7 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReferenceItem(int id)
         {
-            var result = await _service.DeleteAsync(id);
+            var result = await _deleteService.DeleteAsync(id);
             if (!result)
             {
                 return NotFound();
