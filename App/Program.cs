@@ -19,7 +19,13 @@ namespace App
                     ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
                 };
             });
-            builder.Services.AddTransient<ReferenceItemService>();
+            //builder.Services.AddTransient<ReferenceItemService>();
+            builder.Services.AddScoped<IReferenceItemUpdateService, ReferenceItemUpdateService>();
+            builder.Services.AddScoped<IReferenceItemAddService, ReferenceItemAddService>();
+            builder.Services.AddScoped<IReferenceItemGetService, ReferenceItemGetService>();
+            builder.Services.AddScoped<IReferenceItemDeleteService, ReferenceItemDeleteService>();
+            builder.Services.AddScoped<ITagGetService, TagGetService>();
+
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllersWithViews();

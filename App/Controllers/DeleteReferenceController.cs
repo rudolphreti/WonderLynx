@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Controllers
 {
-    public class DeleteReferenceController(ReferenceItemService referenceItemService, ILogger<DeleteReferenceController> logger) : Controller
+    public class DeleteReferenceController(IReferenceItemDeleteService referenceItemDeleteService, ILogger<DeleteReferenceController> logger) : Controller
     {
-        private readonly ReferenceItemService _referenceItemService = referenceItemService;
+        private readonly IReferenceItemDeleteService _referenceItemService = referenceItemDeleteService;
         private readonly ILogger<DeleteReferenceController> _logger = logger;
 
         [HttpPost]

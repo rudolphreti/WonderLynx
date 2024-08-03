@@ -4,9 +4,9 @@ using App.Services;
 
 namespace App.Controllers
 {
-    public class AddReferenceController(ReferenceItemService referenceItemService, ILogger<AddReferenceController> logger) : Controller
+    public class AddReferenceController(IReferenceItemAddService referenceItemAddService, ILogger<AddReferenceController> logger) : Controller
     {
-        private readonly ReferenceItemService _referenceItemService = referenceItemService;
+        private readonly IReferenceItemAddService _referenceItemService = referenceItemAddService;
         private readonly ILogger<AddReferenceController> _logger = logger;
 
         public IActionResult Add()

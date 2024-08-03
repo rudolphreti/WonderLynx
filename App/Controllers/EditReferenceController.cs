@@ -4,14 +4,16 @@ using App.Services;
 
 namespace App.Controllers
 {
-    public class EditReferenceController(ReferenceItemService referenceItemService, ILogger<EditReferenceController> logger) : Controller
+    public class EditReferenceController(IReferenceItemUpdateService referenceItemUpdateService, IReferenceItemGetService referenceItemGetService, ILogger<EditReferenceController> logger) : Controller
     {
-        private readonly ReferenceItemService _referenceItemService = referenceItemService;
+        private readonly IReferenceItemUpdateService _referenceItemService = referenceItemUpdateService;
         private readonly ILogger<EditReferenceController> _logger = logger;
+        private readonly IReferenceItemGetService _referenceItemGetService = referenceItemGetService;
+
 
         public async Task<IActionResult> Edit(int id)
         {
-            var referenceItem = await _referenceItemService.GetReferenceItem(id);
+            var referenceItem = await _referenceItemGetService.GetReferenceItem(id);
 
             if (referenceItem != null)
             {
