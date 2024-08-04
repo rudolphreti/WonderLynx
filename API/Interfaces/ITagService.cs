@@ -11,5 +11,7 @@ namespace API.Interfaces
         Task<Tag> AddAsync(Tag tag);
         Task<Tag> UpdateAsync(Tag tag);
         Task<bool> DeleteAsync(int id);
+        Task UpdateTagsForReferenceItemAsync(int referenceId, List<int> tagIds);
+
     }
 }

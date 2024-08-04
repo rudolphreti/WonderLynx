@@ -4,6 +4,6 @@ namespace App.Services
 {
     public interface IReferenceItemUpdateService
     {
-        Task<HttpResponseMessage> UpdateReferenceItem(UpdateReference model);
+        Task<HttpResponseMessage> UpdateReferenceItem(ReferenceItem model);
     }
 }

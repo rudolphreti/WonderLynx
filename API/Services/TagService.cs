@@ -1,19 +1,12 @@
 ﻿using API.Interfaces;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace API.Services
 {
-    public class TagService : ITagService
+    public class TagService(WonderLynxContext context) : ITagService
     {
-        private readonly WonderLynxContext _context;
-
-        public TagService(WonderLynxContext context)
-        {
-            _context = context;
-        }
+        private readonly WonderLynxContext _context = context;
 
         public async Task<IEnumerable<Tag>> GetAllAsync()
         {
@@ -51,5 +44,36 @@ namespace API.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task UpdateTagsForReferenceItemAsync(int referenceId, List<int> tagIds)
+        {
+            // Lade das ReferenceItem mit den zugehörigen Tags
+            var referenceItem = await _context.ReferenceItems
+                .Include(ri => ri.Tags)
+                .FirstOrDefaultAsync(ri => ri.ReferenceId == referenceId);
+
+            if (referenceItem == null)
+            {
+                throw new KeyNotFoundException("ReferenceItem not found");
+            }
+
+            // Entferne bestehende Tags
+            referenceItem.Tags.Clear();
+
+            // Füge neue Tags hinzu
+            if (tagIds != null && tagIds.Count > 0)
+            {
+                var tags = await _context.Tags.Where(t => tagIds.Contains(t.TagId)).ToListAsync();
+                foreach (var tag in tags)
+                {
+                    referenceItem.Tags.Add(tag);
+                }
+            }
+
+            // Speichere die Änderungen
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }

@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using App.Models;
 using App.Services;
+using System.Net.Http.Json;
 
 namespace App.Controllers
 {
-    public class EditReferenceController(IReferenceItemUpdateService referenceItemUpdateService, IReferenceItemGetService referenceItemGetService, ILogger<EditReferenceController> logger) : Controller
+    public class EditReferenceController(IReferenceItemUpdateService referenceItemUpdateService, IReferenceItemGetService referenceItemGetService,
+        ILogger<EditReferenceController> logger) : Controller
     {
-        private readonly IReferenceItemUpdateService _referenceItemService = referenceItemUpdateService;
+        private readonly IReferenceItemUpdateService _referenceItemUpdateService = referenceItemUpdateService;
         private readonly ILogger<EditReferenceController> _logger = logger;
         private readonly IReferenceItemGetService _referenceItemGetService = referenceItemGetService;
-
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -27,16 +28,18 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UpdateReference model)
+        public async Task<IActionResult> Edit(ReferenceItem model)
         {
             if (ModelState.IsValid)
             {
-                var response = await _referenceItemService.UpdateReferenceItem(model);
+                var response = await _referenceItemUpdateService.UpdateReferenceItem(model);
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"Fehler beim Aktualisieren des Referenzitems. Status Code: {response.StatusCode}, Fehler: {errorContent}");
                 }
+
                 else
                 {
                     _logger.LogError("Fehler beim Aktualisieren des Referenzitems.");

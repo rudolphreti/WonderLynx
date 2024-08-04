@@ -16,7 +16,7 @@ namespace App.Services
             else
             {
                 _logger.LogError("Fehler beim Abrufen der Tags.");
-                return new List<string>();
+                return [];
             }
         }
     }

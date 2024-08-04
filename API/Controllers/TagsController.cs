@@ -1,8 +1,6 @@
 ﻿using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -71,5 +69,20 @@ namespace API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("UpdateTagsForReference/{referenceId}")]
+        public async Task<IActionResult> UpdateTagsForReference(int referenceId, [FromBody] List<int> tagIds)
+        {
+            try
+            {
+                await _service.UpdateTagsForReferenceItemAsync(referenceId, tagIds);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
     }
 }
