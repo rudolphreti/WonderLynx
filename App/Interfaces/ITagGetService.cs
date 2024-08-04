@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using App.Models;
 
 namespace App.Services
 {
     public interface ITagGetService
     {
-        Task<List<string>> GetAllTags();
+        Task<List<Tag>> GetAllTags();
     }
 }

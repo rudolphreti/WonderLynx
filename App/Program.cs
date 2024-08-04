@@ -26,6 +26,7 @@ namespace App
             builder.Services.AddScoped<IReferenceItemGetService, ReferenceItemGetService>();
             builder.Services.AddScoped<IReferenceItemDeleteService, ReferenceItemDeleteService>();
             builder.Services.AddScoped<ITagGetService, TagGetService>();
+            builder.Services.AddScoped<ITagUpdateService, TagUpdateService>();
 
 
             builder.Services.AddHttpContextAccessor();

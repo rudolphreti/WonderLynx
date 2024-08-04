@@ -2,22 +2,28 @@
 using App.Models;
 using App.Services;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App.Controllers
 {
-    public class EditReferenceController(IReferenceItemUpdateService referenceItemUpdateService, IReferenceItemGetService referenceItemGetService,
+    public class EditReferenceController(IReferenceItemUpdateService referenceItemUpdateService, IReferenceItemGetService referenceItemGetService, ITagUpdateService tagUpdateService, ITagGetService tagGetService,
         ILogger<EditReferenceController> logger) : Controller
     {
         private readonly IReferenceItemUpdateService _referenceItemUpdateService = referenceItemUpdateService;
         private readonly ILogger<EditReferenceController> _logger = logger;
         private readonly IReferenceItemGetService _referenceItemGetService = referenceItemGetService;
+        private readonly ITagUpdateService _tagUpdateService = tagUpdateService;
+        private readonly ITagGetService _tagGetService = tagGetService;
+
 
         public async Task<IActionResult> Edit(int id)
         {
             var referenceItem = await _referenceItemGetService.GetReferenceItem(id);
+            var availableTags = await _tagGetService.GetAllTags();
 
             if (referenceItem != null)
             {
+                ViewBag.AvailableTags = availableTags; // Tags in ViewBag speichern
                 return View(referenceItem);
             }
             else
@@ -28,25 +34,39 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ReferenceItem model)
+        public async Task<IActionResult> Edit(ReferenceItem model, List<int> selectedTags)
         {
             if (ModelState.IsValid)
             {
-                var response = await _referenceItemUpdateService.UpdateReferenceItem(model);
+                // Update the reference item
+                var refResponse = await _referenceItemUpdateService.UpdateReferenceItem(model);
 
-                if (!response.IsSuccessStatusCode)
+                if (refResponse.IsSuccessStatusCode)
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogError($"Fehler beim Aktualisieren des Referenzitems. Status Code: {response.StatusCode}, Fehler: {errorContent}");
-                }
+                    // Update tags for the reference item
+                    var tagResponse = await _tagUpdateService.UpdateTagsForReferenceAsync(model.ReferenceId, selectedTags);
 
+                    if (tagResponse.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index", "Home");
+
+                        
+                    } else                     {
+                        var errorContent = await tagResponse.Content.ReadAsStringAsync();
+                        _logger.LogError($"Fehler beim Aktualisieren der Tags. Status Code: {tagResponse.StatusCode}, Fehler: {errorContent}");
+                    }
+                }
                 else
                 {
-                    _logger.LogError("Fehler beim Aktualisieren des Referenzitems.");
-                    return View(model);
+                    var errorContent = await refResponse.Content.ReadAsStringAsync();
+                    _logger.LogError($"Fehler beim Aktualisieren des Referenzitems. Status Code: {refResponse.StatusCode}, Fehler: {errorContent}");
                 }
+            } else
+            {
+                _logger.LogError("Ungültige Eingabe beim Aktualisieren des Referenzitems.");
             }
-            return View(model);
+            throw new ArgumentException("Error");
         }
+
     }
 }
