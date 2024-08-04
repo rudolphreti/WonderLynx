@@ -12,44 +12,6 @@ WonderLynx is a straightforward CRUD application built with .NET 8.0 and C# 12. 
 - **SOLID Principles**: The project adheres to SOLID principles to maintain clean, scalable, and maintainable code.
 - **Clean Code**: Emphasis on writing clear, understandable, and maintainable code.
 
-## DB-Script:
-´´´sql
-CREATE DATABASE WonderLynx;
-
-USE WonderLynx;
-
-CREATE TABLE Categories (
-    CategoryId INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Tags (
-    TagId INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Types (
-    TypeId INT PRIMARY KEY IDENTITY,
-    Name NVARCHAR(100) NOT NULL
-);
-
-CREATE TABLE ReferenceItems (
-    ReferenceId INT PRIMARY KEY IDENTITY,
-    Title NVARCHAR(200) NOT NULL,
-    Subtitle NVARCHAR(200) NULL,
-    TypeId INT FOREIGN KEY REFERENCES Types(TypeId),
-    CategoryId INT FOREIGN KEY REFERENCES Categories(CategoryId),
-    Description NVARCHAR(MAX) NULL,
-    ThumbnailUrl NVARCHAR(200) NULL
-);
-
-CREATE TABLE ReferenceTags (
-    ReferenceId INT FOREIGN KEY REFERENCES ReferenceItems(ReferenceId),
-    TagId INT FOREIGN KEY REFERENCES Tags(TagId),
-    PRIMARY KEY (ReferenceId, TagId)
-);
-´´´
-
 ## TO DO:
 
 The project is in a stable state, but there are several opportunities for enhancement and expansion:
