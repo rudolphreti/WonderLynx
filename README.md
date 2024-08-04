@@ -86,7 +86,7 @@ The project is in a stable state, but there are several opportunities for enhanc
    - Verbinde dich mit deinem SQL Server.
    - Erstelle eine neue Datenbank mit dem SQL-Skript:
    
-   ```sql
+```sql
    CREATE DATABASE WonderLynx;
 
    USE WonderLynx;
@@ -121,7 +121,7 @@ The project is in a stable state, but there are several opportunities for enhanc
        TagId INT FOREIGN KEY REFERENCES Tags(TagId),
        PRIMARY KEY (ReferenceId, TagId)
    );
-   ```
+```
 
 2. **Datenbankverbindung konfigurieren**:
    - Öffne das Projekt in Visual Studio.
