@@ -1,8 +1,8 @@
 # WonderLynx
 
-WonderLynx is a straightforward CRUD application built with .NET 8.0 and C# 12. The primary focus of this project is on technical excellence and adherence to software development best practices, rather than on elaborate visual design.
+WonderLynx is a straightforward CRUD application built with .NET 8.0 and C# 12. The main goal of this project is to increase knowledge of the technologies used in production environments as well as best practices for writing code. 
 
-![Bild](Screenshots/screen.png)
+![Screenshot](Screenshots/screen.png)
 
 ## Current Features
 
@@ -111,42 +111,9 @@ The project is in a stable state, but there are several opportunities for enhanc
 
 ### Schritt 3: API verwenden
 
-1. **Swagger UI öffnen**:
-   - Öffne einen Webbrowser und gehe zu `https://localhost:7265/swagger`.
-   - Verwende Swagger UI, um die verfügbaren API-Endpunkte zu durchsuchen und zu testen.
+Verwende Swagger UI, um die verfügbaren API-Endpunkte zu durchsuchen und zu testen:
 
-2. **Beispiel-API-Endpunkte**:
-  - **GET /ReferenceItems**
-  - Beschreibung: Gibt eine Liste aller ReferenceItems zurück.
-
-- **POST /ReferenceItems**
-  - Beschreibung: Erstellt ein neues ReferenceItem.
-
-- **GET /ReferenceItems/{id}**
-  - Beschreibung: Gibt das ReferenceItem mit der angegebenen ID zurück.
-
-- **PUT /ReferenceItems/{id}**
-  - Beschreibung: Aktualisiert das ReferenceItem mit der angegebenen ID.
-
-- **DELETE /ReferenceItems/{id}**
-  - Beschreibung: Löscht das ReferenceItem mit der angegebenen ID.
-- **GET /Tags**
-  - Beschreibung: Gibt eine Liste aller Tags zurück.
-
-- **POST /Tags**
-  - Beschreibung: Erstellt einen neuen Tag.
-
-- **GET /Tags/{id}**
-  - Beschreibung: Gibt den Tag mit der angegebenen ID zurück.
-
-- **PUT /Tags/{id}**
-  - Beschreibung: Aktualisiert den Tag mit der angegebenen ID.
-
-- **DELETE /Tags/{id}**
-  - Beschreibung: Löscht den Tag mit der angegebenen ID.
-
-- **PUT /Tags/UpdateTagsForReference/{referenceId}**
-  - Beschreibung: Aktualisiert die Tags für das angegebene ReferenceItem.
+![Screenshot](Screenshots/swagger.png)
 
 3. **Authentifizierung und Autorisierung**:
    - Falls benötigt, implementiere und konfiguriere die Authentifizierung (z.B. JWT oder OAuth).
