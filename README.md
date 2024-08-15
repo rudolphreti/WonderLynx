@@ -1,16 +1,8 @@
 # WonderLynx
 
-WonderLynx is a straightforward CRUD application built with .NET 8.0 and C# 12. The main goal of this project is to increase knowledge of the technologies used in production environments as well as best practices for writing code. 
+WonderLynx is a CRUD application for managing references built with .NET 8.0 and C# 12. The main goal of this project is to increase author's knowledge of the technologies used in production environments as well as best practices for writing code. 
 
 ![Screenshot](Screenshots/screen.png)
-
-## Current Features
-
-- **REST API**: A well-structured API for managing reference items, categories, tags, and types.
-- **Swagger Integration**: The API is fully documented using Swagger, providing an accessible interface for developers to interact with the endpoints.
-- **Dependency Injection (DI)**: Extensively utilized to ensure loose coupling and ease of testing.
-- **SOLID Principles**: The project adheres to SOLID principles to maintain clean, scalable, and maintainable code.
-- **Clean Code**: Emphasis on writing clear, understandable, and maintainable code.
 
 ## Usage
 
