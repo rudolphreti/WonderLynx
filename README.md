@@ -12,27 +12,6 @@ WonderLynx is a straightforward CRUD application built with .NET 8.0 and C# 12. 
 - **SOLID Principles**: The project adheres to SOLID principles to maintain clean, scalable, and maintainable code.
 - **Clean Code**: Emphasis on writing clear, understandable, and maintainable code.
 
-## TO DO:
-
-The project is in a stable state, but there are several opportunities for enhancement and expansion:
-
-1. **Containerization**:
-   - Dockerize the application to facilitate consistent and portable deployments across various environments.
-
-2. **Deployment**:
-   - Deploy the application and its database to Azure Cloud for scalability and improved reliability.
-   - Implement Azure DevOps pipelines to automate Continuous Integration and Continuous Deployment (CI/CD).
-
-3. **Testing**:
-   - Develop comprehensive Unit and Integration Tests to ensure robustness and reliability of the application.
-
-4. **Microservices**:
-   - Explore the implementation of microservices for tasks such as file processing and image compression, allowing for better scalability and separation of concerns.
-
-5. **Best Practices**:
-   - Continue to apply and refine software development best practices, including DRY (Don’t Repeat Yourself), KISS (Keep It Simple, Stupid), and OWASP security guidelines.
-
-
 ## Usage
 
 ### Voraussetzungen
@@ -118,15 +97,25 @@ Verwende Swagger UI, um die verfügbaren API-Endpunkte zu durchsuchen und zu tes
 3. **Authentifizierung und Autorisierung**:
    - Falls benötigt, implementiere und konfiguriere die Authentifizierung (z.B. JWT oder OAuth).
 
-### Schritt 4: Fehlerbehebung und Wartung
+## TO DO:
 
-1. **Fehlerbehandlung**:
-   - Überprüfe die Konsolenausgabe in Visual Studio für etwaige Fehler während der Ausführung.
-   - Verwende die Swagger UI, um sicherzustellen, dass die API korrekt reagiert.
+The project is in a stable state, but there are several opportunities for enhancement and expansion:
 
-2. **Weiterentwicklung**:
-   - Folge den Prinzipien von SOLID, DRY, und KISS bei der Entwicklung und Pflege des Projekts.
-   - Nutze Dependency Injection (DI) und Azure DevOps für eine saubere und skalierbare Architektur.
+1. **Containerization**:
+   - Dockerize the application to facilitate consistent and portable deployments across various environments.
+
+2. **Deployment**:
+   - Deploy the application and its database to Azure Cloud for scalability and improved reliability.
+   - Implement Azure DevOps pipelines to automate Continuous Integration and Continuous Deployment (CI/CD).
+
+3. **Testing**:
+   - Develop comprehensive Unit and Integration Tests to ensure robustness and reliability of the application.
+
+4. **Microservices**:
+   - Explore the implementation of microservices for tasks such as file processing and image compression, allowing for better scalability and separation of concerns.
+
+5. **Best Practices**:
+   - Continue to apply and refine software development best practices, including DRY (Don’t Repeat Yourself), KISS (Keep It Simple, Stupid), and OWASP security guidelines.
 
 ## Contributing
 
